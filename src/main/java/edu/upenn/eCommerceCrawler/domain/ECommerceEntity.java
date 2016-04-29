@@ -9,39 +9,48 @@ import com.sleepycat.persist.model.PrimaryKey;
 public class ECommerceEntity {
 	@PrimaryKey(sequence = "id")
 	private Long id;
-	private double salary;
-	private Date date;
+	private int sales;   
+	private double price;
+	private String date;
 	private String imageLink;
 	private String type;
 
-	public ECommerceEntity(double salary, Date date, String imageLink, String type) {
-		this.setSalary(salary);
+	public ECommerceEntity(int sales, double price, String date, String imageLink, String type) {
+		this.setSales(sales);
+		this.setPrice(price);
 		this.setDate(date);
 		this.setImageLink(imageLink);
 		this.setType(type);
 	}
 
 	public ECommerceEntity() {
-
 	}
 
 	public Long getId() {
 		return id;
 	}
-
-	public double getSalary() {
-		return salary;
+	
+	public int getSales() {
+		return sales; 
+	}
+	
+	public double getPrice() {
+		return price;
 	}
 
-	public void setSalary(double salary) {
-		this.salary = salary;
+	public void setSales(int sales) {
+		this.sales = sales; 
+	}
+	
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

@@ -9,9 +9,17 @@ import com.sleepycat.persist.EntityStore;
 import com.sleepycat.persist.PrimaryIndex;
 import com.sleepycat.persist.StoreConfig;
 
+/**
+ * This is a BerkeleyDB class that saves data in <key, value> pairs 
+ *
+ */
 public class BerkeleyDB {
 	private static BerkeleyDB instance;
-	private static File file = new File("/Users/bondwong/Desktop/JEDB");
+	/**
+	 * directory location in which database environment resides 
+	 */
+	//private static File file = new File("/Users/bondwong/Desktop/JEDB");
+	private static File file = new File("C:\\Users\\Ting\\Desktop\\JEDB");
 	private Environment env;
 	private EntityStore store;
 
@@ -35,20 +43,41 @@ public class BerkeleyDB {
 	}
 
 	public void setup() throws DatabaseException {
-		if(!file.exists()) file.mkdir();
+		if(!file.exists()) file.mkdir();  
+		
+		/**
+		 * open database environment - JE database
+		 */
 		EnvironmentConfig envConfig = new EnvironmentConfig();
 		envConfig.setAllowCreate(true);
-		envConfig.setTransactional(true);
-		env = new Environment(file, envConfig);
+		envConfig.setTransactional(true); //supports transactions
+		env = new Environment(file, envConfig); 
 
+		/**
+		 * create entity store (basic entity: ECommerceEntity) 
+		 */
 		StoreConfig storeConfig = new StoreConfig();
 		storeConfig.setAllowCreate(true);
 		store = new EntityStore(env, "EntityStore", storeConfig);
 	}
 
-	public void close() throws DatabaseException {
-		store.close();
-		env.close();
+	/**
+	 * Close database environment
+	 */
+	public void close()  {
+		if (env != null) {
+			try {
+				store.close();
+				env.cleanLog();
+				env.close();
+			} catch (DatabaseException dbe) {
+				System.err.println("Error closing environment" +
+						dbe.toString());
+			}
+		}
 	}
-
+	
+	public Environment getEnv() {
+		return env;
+	}
 }

@@ -31,15 +31,9 @@ public class StartupListener implements ServletContextListener {
 	}
 
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		// TODO Auto-generated method stub
-		try {
-			ExecutorService pool = (ExecutorService) servletContextEvent.getServletContext().getAttribute(POOL);
-			pool.shutdownNow();
-			BerkeleyDB.getInstance().close();
-		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ExecutorService pool = (ExecutorService) servletContextEvent.getServletContext().getAttribute(POOL);
+		pool.shutdownNow();
+		BerkeleyDB.getInstance().close();
 
 	}
 

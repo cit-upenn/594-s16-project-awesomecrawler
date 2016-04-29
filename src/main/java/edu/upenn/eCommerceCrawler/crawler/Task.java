@@ -1,7 +1,7 @@
 package edu.upenn.eCommerceCrawler.crawler;
 
 public class Task {
-	private String url;
+	public String url;
 	private TaskType type;
 
 	public Task(String url, TaskType type) {
