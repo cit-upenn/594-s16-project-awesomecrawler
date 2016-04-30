@@ -29,7 +29,7 @@ public class BerkeleyDBTest {
 	}
 
 	@Test
-	public void testDBClose() {
+	public void testDBClose() throws DatabaseException {
 		try {
 			BerkeleyDB.getInstance().setup();
 		} catch (DatabaseException e) {
@@ -37,13 +37,7 @@ public class BerkeleyDBTest {
 			e.printStackTrace();
 		}
 
-		try {
-			BerkeleyDB.getInstance().close();
-		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			fail();
-		}
+		BerkeleyDB.getInstance().close();
 		assertTrue(true);
 	}
 
