@@ -1,6 +1,8 @@
 #ReadMe 
 
-We designed and built a REST API from scratch that allow users to access the eCommerce sales database constructed through crawling major eCommerce websites such as Ebay, Amazon and Macy's. We used Bereley DB to implement a disk-backed data store. Both our database and REST service are hosted on Linode (Amazon EC2 takes too much time to configure). The input parameters of our API is site name and keys to get. The output is a JSON data streams of product information. 
+We designed and built a REST API from scratch that allow users to access the eCommerce sales database constructed through crawling major eCommerce websites such as Ebay, Amazon and Macy's. We used Bereley DB to implement a disk-backed data store. Both our database and REST service are hosted on Linode (Amazon EC2 takes too much time to configure). The input parameters of our API is site name and keys to get. The output is a JSON data streams of product information which can be accessed here:
+
+                            http://45.79.133.245/v1/data/1/2000 
 
 ###Why another webcrawler
 
