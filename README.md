@@ -2,7 +2,7 @@
 
 We designed and built a REST API from scratch that allow users to access the eCommerce sales database constructed through crawling major eCommerce websites such as Ebay, Amazon and Macy's. We used Bereley DB to implement a disk-backed data store. Both our database and REST service are hosted on Linode (Amazon EC2 takes too much time to configure). The input parameters of our API is site name and keys to get. The output is a JSON data streams of product information. 
 
-###Why another webcrawler? 
+###Why another webcrawler
 
 Despite existing powerful crawler such as wget, we believe there's a need for webcrawler that allowed easy customization. Moreover, the traditional webcrawler lacks some important features since it's not really multithreaded (although the actual crawling is spawned off in a separate thread). 
 
@@ -20,10 +20,10 @@ The two main tasks of a webcrawler are saving data from a URL and extracting hyp
 
 We used a threadpool to help crawling more efficient. Each thread is responsible to crawl one website. There are only two workers now but the benefit from reducing overhead will increase with more and more sites being added. 
 
-###Data structure: 
+###Data structure 
 We used BlockingQueue (thread safe) to avoid deliberately handling low-level synchronization. Other data structures include HashMap, ArrayList, etc. 
 
-###Reasons behind choice of technology: 
+###Reasons behind choice of technology 
 __REST API__ 
 There are various reasons for adopting REST as the underlying layer for data access. It makes the extracting, transforming and loading of data easier. And it enables fast web services and the ability to get a quick response. In addition, JSON results are mobile friendly so require no translation layer. 
 
