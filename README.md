@@ -35,5 +35,6 @@ We choose Maven to manage our project. It automates complilation of classes and 
 
 ###Division of work
 Ting Wang: main crawler classes, domain and web content classes 
+
 Ting Yin: set up the Maven, BerekeleyDB implementation, project deployment on cloud-hosting server 
 
