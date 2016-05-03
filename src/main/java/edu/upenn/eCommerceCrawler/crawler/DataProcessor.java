@@ -23,11 +23,9 @@ public class DataProcessor {
 		this.task = task; 
 		this.site = siteID;  
 		this.config = config;
-		try {
-			doc = Jsoup.connect(task.url).get();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		this.doc = SaveURL.getHtmlPage(task.url);
+		
 		if (site.contains("amazon")) {
 			processAmazonData(); 
 		} else if (site.contains("ebay")) {
@@ -83,7 +81,7 @@ public class DataProcessor {
 		image = doc.select(config.getItemImage()).attr("src"); 
 		
 		// type 
-		type = "";
+		type = "TBD";
 	}
 	
 	public String getSalesRank(String sales)  {
@@ -102,6 +100,11 @@ public class DataProcessor {
 	 * create corresponding ECommerceEntity
 	 */
 	public ECommerceEntity getEntity() {
+		
+		System.out.println("sales = " + sales + " price= " + price + " date= " + date + 
+				" type= " + type); 
+		System.out.println("imageURL: " + image);
+		
 		ECommerceEntity entity = new ECommerceEntity(sales, price, date, image, type);
 		return entity; 
 	}

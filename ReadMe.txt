@@ -1,6 +1,6 @@
 ReadMe 
 
-We designed and developed a REST API from scratch to crawl data from Ecommerce websites like Amazon and Ebay. 
+We designed and developed a REST API from scratch that allow users to access our eCommerce sales database from Amazon and Ebay. Our API is hosted on Amazon EC2. 
 
 Input: A user-supplied config file that specifies 
 	1) seed url 

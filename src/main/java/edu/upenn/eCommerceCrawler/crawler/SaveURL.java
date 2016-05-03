@@ -23,29 +23,14 @@ public class SaveURL {
      * Extract links from a HTML page
      */
     public static ArrayList<Task> extractLinks(String pageURL, String selector, String siteID, TaskType type) {
+    	
+    	Document doc = getHtmlPage(pageURL); 
+    	
     	ArrayList<Task> tasks = new ArrayList<Task>();
-    	Document doc = null;
-		while (true) {
-			try {
-				Connection.Response res = 
-						Jsoup.connect(pageURL).
-						timeout(10000).
-						execute(); 
-				int statusCode = res.statusCode(); 
-				if (statusCode == 200) { 			
-					doc = Jsoup.connect(pageURL).get(); 
-					break; 
-				} else if (statusCode == 503) {
-					System.out.println("Reconnecting...");
-				}
-			} catch (IOException e) {
-				System.out.println("Reconnecting ...");
-			}
-		}
-		
 		Elements links = doc.select(selector);
 		for (Element link: links) {
 			String href = link.attr("href");
+			if (href.isEmpty()) continue; 
 			if (!href.contains(siteID)) {
 				href = siteID + href; 
 			}
@@ -59,30 +44,45 @@ public class SaveURL {
 	 * Extract "next" page link 
 	 */
 	public static Task extractNextPage(String pageURL, String selector, String siteID, TaskType type) {
-		Document doc = null;
-		while (true) {
-			try {
-				Connection.Response res = 
-						Jsoup.connect(pageURL).
-						timeout(10000).
-						execute(); 
-				int statusCode = res.statusCode(); 
-				if (statusCode == 200) { 			
-					doc = Jsoup.connect(pageURL).get(); 
-					break; 
-				} else if (statusCode == 503) {
-					System.out.println("Reconnecting...");
-				}
-			} catch (IOException e) {
-				System.out.println("Reconnecting ...");
-			}
-		}
+		
+		Document doc = getHtmlPage(pageURL); 
 		
 		String nextLink = doc.select(selector).attr("href"); 
+		if (nextLink.isEmpty()) return null; 
 		if (!nextLink.contains(siteID)) {
 			nextLink = siteID + nextLink; 
 		}
 		return new Task(nextLink, type);
+	}
+	
+	/**
+	 * Connect to HTML page 
+	 */
+	public static Document getHtmlPage(String url) {
+		Document doc = null;
+		int count = 0; 
+		while (true) {
+			try {
+				Connection.Response res = 
+						Jsoup.connect(url).
+						timeout(10000).
+						execute(); 
+				int statusCode = res.statusCode(); 
+				if (statusCode == 200) { 			
+					doc = Jsoup.connect(url).get(); 
+					break; 
+				} else if (statusCode == 503) {
+					System.out.println("Reconnecting...");
+					count++; 
+				} 
+				if (count > 50) 
+					break; 
+			} catch (IOException e) {
+				System.out.println("Reconnecting ...");
+				count++; 
+			}
+		}
+		return doc; 
 	}
 }
 

@@ -129,9 +129,12 @@ public class ECommerceCrawler implements Runnable {
 		 * get link to next page
 		 */
 		Task next = SaveURL.extractNextPage(task.url, config.getNextSelector(), siteId, TaskType.LIST);
-		tasks.put(next);
-		System.out.println("next URL: " + next.url);
-		System.out.println();
+		if (next != null) {
+			tasks.put(next);
+			System.out.println("next URL: " + next.url);
+			System.out.println();
+		}
+		
 	}
 
 	/**
