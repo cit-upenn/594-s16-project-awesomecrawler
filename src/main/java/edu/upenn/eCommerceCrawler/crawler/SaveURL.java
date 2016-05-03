@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,18 +22,34 @@ public class SaveURL {
 	/**
      * Extract links from a HTML page
      */
-    public static ArrayList<Task> extractLinks(String pageURL, String selector, TaskType type) {
+    public static ArrayList<Task> extractLinks(String pageURL, String selector, String siteID, TaskType type) {
     	ArrayList<Task> tasks = new ArrayList<Task>();
-		Document page = null;
-		try {
-			page = Jsoup.connect(pageURL).get();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
+    	Document doc = null;
+		while (true) {
+			try {
+				Connection.Response res = 
+						Jsoup.connect(pageURL).
+						timeout(10000).
+						execute(); 
+				int statusCode = res.statusCode(); 
+				if (statusCode == 200) { 			
+					doc = Jsoup.connect(pageURL).get(); 
+					break; 
+				} else if (statusCode == 503) {
+					System.out.println("Reconnecting...");
+				}
+			} catch (IOException e) {
+				System.out.println("Reconnecting ...");
+			}
+		}
 		
-		Elements links = page.select(selector);
+		Elements links = doc.select(selector);
 		for (Element link: links) {
-			tasks.add(new Task(link.attr("href"), type));
+			String href = link.attr("href");
+			if (!href.contains(siteID)) {
+				href = siteID + href; 
+			}
+			tasks.add(new Task(href, type));
 		}
 		
 		return tasks; 
@@ -41,15 +58,30 @@ public class SaveURL {
     /**
 	 * Extract "next" page link 
 	 */
-	public static Task extractNextPage(String pageURL, String selector, TaskType type) {
-		Document page = null;
-		try {
-			page = Jsoup.connect(pageURL).get();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
+	public static Task extractNextPage(String pageURL, String selector, String siteID, TaskType type) {
+		Document doc = null;
+		while (true) {
+			try {
+				Connection.Response res = 
+						Jsoup.connect(pageURL).
+						timeout(10000).
+						execute(); 
+				int statusCode = res.statusCode(); 
+				if (statusCode == 200) { 			
+					doc = Jsoup.connect(pageURL).get(); 
+					break; 
+				} else if (statusCode == 503) {
+					System.out.println("Reconnecting...");
+				}
+			} catch (IOException e) {
+				System.out.println("Reconnecting ...");
+			}
+		}
 		
-		String nextLink = page.select(selector).attr("href"); 
+		String nextLink = doc.select(selector).attr("href"); 
+		if (!nextLink.contains(siteID)) {
+			nextLink = siteID + nextLink; 
+		}
 		return new Task(nextLink, type);
 	}
 }

@@ -7,16 +7,36 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>eCommerceCrawler Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+	<properties>
+		<version.spring>4.2.3.RELEASE</version.spring>
+		<version.jackson>2.6.4</version.jackson>
+	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.7.2</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+
 		<dependency>
-			<groupId>berkeleydb</groupId>
-			<artifactId>je</artifactId>
-			<version>3.2.76</version>
+		   <groupId>berkeleydb</groupId>
+		   <artifactId>je</artifactId>
+		   <version>3.2.76</version>
+		  </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${version.spring}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${version.jackson}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -26,5 +46,16 @@
 	</dependencies>
 	<build>
 		<finalName>eCommerceCrawler</finalName>
+		<plugins>
+		   <plugin>
+		    <groupId>org.apache.maven</groupId>
+		    <artifactId>maven-compiler-plugin</artifactId>
+		    <version>3.3</version>
+		    <configuration>
+		     <source>1.8</source>
+		     <target>1.8</target>
+		    </configuration>
+		   </plugin>
+		  </plugins>
 	</build>
 </project>

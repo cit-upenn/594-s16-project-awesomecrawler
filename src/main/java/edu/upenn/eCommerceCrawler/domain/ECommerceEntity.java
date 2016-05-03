@@ -1,21 +1,22 @@
 package edu.upenn.eCommerceCrawler.domain;
 
-import java.util.Date;
-
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
 
+import edu.upenn.eCommerceCrawler.domain.helper.IDHelper;
+
 @Entity
 public class ECommerceEntity {
-	@PrimaryKey(sequence = "id")
+	@PrimaryKey
 	private Long id;
-	private int sales;   
-	private double price;
+	private String sales;   
+	private String price;
 	private String date;
 	private String imageLink;
 	private String type;
 
-	public ECommerceEntity(int sales, double price, String date, String imageLink, String type) {
+	public ECommerceEntity(String sales, String price, String date, String imageLink, String type) {
+		this.id = IDHelper.getId();
 		this.setSales(sales);
 		this.setPrice(price);
 		this.setDate(date);
@@ -24,25 +25,26 @@ public class ECommerceEntity {
 	}
 
 	public ECommerceEntity() {
+		this.id = IDHelper.getId();
 	}
 
 	public Long getId() {
 		return id;
 	}
 	
-	public int getSales() {
+	public String getSales() {
 		return sales; 
 	}
 	
-	public double getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
-	public void setSales(int sales) {
-		this.sales = sales; 
+	public void setSales(String sales2) {
+		this.sales = sales2; 
 	}
 	
-	public void setPrice(double price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 

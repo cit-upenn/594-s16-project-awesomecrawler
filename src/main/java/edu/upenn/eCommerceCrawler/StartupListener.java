@@ -31,9 +31,15 @@ public class StartupListener implements ServletContextListener {
 	}
 
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		ExecutorService pool = (ExecutorService) servletContextEvent.getServletContext().getAttribute(POOL);
-		pool.shutdownNow();
-		BerkeleyDB.getInstance().close();
+		// TODO Auto-generated method stub
+		try {
+			ExecutorService pool = (ExecutorService) servletContextEvent.getServletContext().getAttribute(POOL);
+			pool.shutdownNow();
+			BerkeleyDB.getInstance().close();
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -50,7 +56,8 @@ public class StartupListener implements ServletContextListener {
 
 		BlockingQueue<Task> tasks = new LinkedBlockingQueue<Task>();
 		ExecutorService pool = Executors.newCachedThreadPool();
-		pool.execute(new ECommerceCrawler(tasks));
+		pool.execute(new ECommerceCrawler(tasks,"Ebay"));
+		pool.execute(new ECommerceCrawler(tasks, "Amazon"));
 		servletContextEvent.getServletContext().setAttribute(POOL, pool);
 
 	}
