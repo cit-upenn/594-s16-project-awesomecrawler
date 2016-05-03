@@ -1,57 +1,37 @@
 ReadMe 
 
-We designed and developed a REST API from scratch that allow users to access our eCommerce sales database from Amazon and Ebay. Our API is hosted on Amazon EC2. 
-
-Input: A user-supplied config file that specifies 
-	1) seed url 
-	2) Xpath/CSS selectors of urls 
-Output: id, image, sales, price of all the items sold
-
-Challenges:
-build a distributed, scalable, high-performance (50 million docs per day), polite(set a cap on pages downloaded for each server), continuous, extensible, and portable. 
-
+We designed and built a REST API from scratch that allow users to access the eCommerce sales database constructed through crawling major eCommerce websites such as Ebay, Amazon and Macy's. We used Bereley DB to implement a disk-backed data store. Both our database and REST service are hosted on Linode (Amazon EC2 takes too much time to configure). The input parameters of our API is site name and keys to get. The output is a JSON data streams of product information. 
 
 Why another webcrawler? 
-Despite existing powerful crawler such as wget, for my project it required a webcrawler that allowed easy customization. Moreover, Sun's tutorial webcrawler lacks some important features since it's not really multithreaded (although the actual crawling is spawned off in a separate thread). 
 
-Multithreading
-Webcrawling speed is governed not only by the speed of one's one internet connection, but also by the speed of the sites that are to be crawled. Especially if one is crawling sites from multiple servers, the total crawling time can be significantly reduced, if many downloads are done in parallel. 
+Despite existing powerful crawler such as wget, we believe there's a need for webcrawler that allowed easy customization. Moreover, the traditional webcrawler lacks some important features since it's not really multithreaded (although the actual crawling is spawned off in a separate thread). 
 
 Algorithm 
-When the crawler visits a web page, it extracts links to other web pages and puts these URLs at the end of a queue, and continues crawling to a URL that it removes from the front of the queue. Java provides easy-to-use classes for both multithreading and handling of lists. It is desirable that one and the same webpage is not crawled multiple times. For that reason we use a hashset to keep track of URLs that have been visited. 
 
-Crawling a web page 
-The two main tasks of a webcrawler are saving data from a URL and extracting hyperlinks. 
-
-Maven 
-Our crawler runs on an Apache server. We choose Maven to manage our project. It automates complilation of classes and deployment to the server.
-"run clean intall" automatically generates .jar 
-pom.xml specifies 1) project info, 2) dependencies, 3) plugins 
-It will pull in the dependencies declared in the pom.xml doc in local repositories and remote repositories. 
-Plugins are actions that take place to run our application, such as compile and test phase, and install phase. 
-Benefits: 
-	1) reduce script complexity
-	2) externalize dependency management
-	3) create consistent builds through standardized commands
-Maven automates the following activities easy with one click!
-- multi developer environment 
-- version control of source code 
-- run unit test 
-- deployment  
-Independent IDE, continuous integration(CI), 
-  
+The two main tasks of a webcrawler are saving data from a URL and extracting hyperlinks. When the crawler visits a web page, it downloads the html page and extracts URLs it needs to visit next and puts them into a queue. For example, the crawler enters www.amazon.com and needs to navigate itself through to reach the level of an individual item. These URLs are then visited later when they were dequeued. When the crawler hits the product information levle, it will download sales information for each product.  
 
 Design patterns 
-The best design pattern for such a procedure is Producer-Consumer design pattern
-- use wait and notify method to communicate between P and C thread and blocking each of them on individual condition like full queue or empty queue. 
-Implements interface 
-Implements factory design pattern 
-Data Assess Object(DAO) pattern to separate low level data accessing API from high level business services mainly to perform CRUD (create, get, update, and delete) operations. 
 
+- Producer-Consumer: The best design pattern to implement the above algorithm is Producer-Consumer design pattern. A producer puts tasks into the queue and a worker/consumer gets it to process depending on what type of task it is.
+- Factory pattern: since there are potentially many websites to crawl and each is structured in different ways, we wrote a config file for each site to specify the XPath in order to help the crawler navigate through the site and locate product page. The ConfigFactory decides which config file to instantiate depending on the site parameter. All the config files (AmazonConfig, EbayConfig, etc.) implements the Config interface.  
+- Data Assess Object(DAO) pattern is used to facilitate communications between database and application. It serves as interface that specifies how to save and fetch data into BerekeleyDB. 
+
+Multithreading
+
+We used a threadpool to help crawling more efficient. Each thread is responsible to crawl one website. There are only two workers now but the benefit from reducing overhead will increase with more and more sites being added. 
 
 Data structure: 
-- we use BlockingQueue (thread safe) to avoid deliberately handling low-level synchronization
+We used BlockingQueue (thread safe) to avoid deliberately handling low-level synchronization. Other data structures include HashMap, ArrayList, etc. 
 
+Reasons behind choice of technology: 
+REST API 
+There are various reasons for adopting REST as the underlying layer for data access. It makes the extracting, transforming and loading of data easier. And it enables fast web services and the ability to get a quick response. In addition, JSON results are mobile friendly so require no translation layer. 
+
+BerekeleyDB
+We chose BerekeleyDB (a NoSQL database) to store cralwed data because it's a popular embedded database and is relatively easy to use. Our store holds the product information such as sales, price, date, and image. The path to the BerkeleyDB data store is specified as the BDBstore context in our web.xml file. 
+
+Maven 
+We choose Maven to manage our project. It automates complilation of classes and deployment to the server. The pom.xml specifies 1) project info, 2) dependencies, 3) plugins. It will pull in the dependencies declared in the pom.xml doc in local repositories and remote repositories. 
 
 Questions: 
 - crawler run on server or not? 
