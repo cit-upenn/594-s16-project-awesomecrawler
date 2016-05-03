@@ -24,13 +24,13 @@ We used a threadpool to help crawling more efficient. Each thread is responsible
 We used BlockingQueue (thread safe) to avoid deliberately handling low-level synchronization. Other data structures include HashMap, ArrayList, etc. 
 
 ###Reasons behind choice of technology: 
-_REST API_  
+__REST API__ 
 There are various reasons for adopting REST as the underlying layer for data access. It makes the extracting, transforming and loading of data easier. And it enables fast web services and the ability to get a quick response. In addition, JSON results are mobile friendly so require no translation layer. 
 
-_BerekeleyDB_ 
+__BerekeleyDB__ 
 We chose BerekeleyDB (a NoSQL database) to store cralwed data because it's a popular embedded database and is relatively easy to use. Our store holds the product information such as sales, price, date, and image. The path to the BerkeleyDB data store is specified as the BDBstore context in our web.xml file. 
 
-_Maven_ 
+__Maven__ 
 We choose Maven to manage our project. It automates complilation of classes and deployment to the server. The pom.xml specifies 1) project info, 2) dependencies, 3) plugins. It will pull in the dependencies declared in the pom.xml doc in local repositories and remote repositories. 
 
 ###Division of work
