@@ -12,9 +12,9 @@ The two main tasks of a webcrawler are saving data from a URL and extracting hyp
 
 ###Design patterns 
 
-- Producer-Consumer: The best design pattern to implement the above algorithm is Producer-Consumer design pattern. A producer puts tasks into the queue and a worker/consumer gets it to process depending on what type of task it is.
-- Factory pattern: since there are potentially many websites to crawl and each is structured in different ways, we wrote a config file for each site to specify the XPath in order to help the crawler navigate through the site and locate product page. The ConfigFactory decides which config file to instantiate depending on the site parameter. All the config files (AmazonConfig, EbayConfig, etc.) implements the Config interface.  
-- Data Assess Object(DAO) pattern is used to facilitate communications between database and application. It serves as interface that specifies how to save and fetch data into BerekeleyDB. 
+- __Producer-Consumer__: The best design pattern to implement the above algorithm is Producer-Consumer design pattern. A producer puts tasks into the queue and a worker/consumer gets it to process depending on what type of task it is.
+- __Factory pattern__: since there are potentially many websites to crawl and each is structured in different ways, we wrote a config file for each site to specify the XPath in order to help the crawler navigate through the site and locate product page. The ConfigFactory decides which config file to instantiate depending on the site parameter. All the config files (AmazonConfig, EbayConfig, etc.) implements the Config interface.  
+- __Data Assess Object(DAO) pattern__ is used to facilitate communications between database and application. It serves as interface that specifies how to save and fetch data into BerekeleyDB. 
 
 ###Multithreading
 
