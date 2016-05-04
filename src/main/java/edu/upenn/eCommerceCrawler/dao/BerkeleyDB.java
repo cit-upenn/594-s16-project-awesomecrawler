@@ -11,7 +11,6 @@ import com.sleepycat.persist.StoreConfig;
 
 public class BerkeleyDB {
 	private static BerkeleyDB instance;
-	//private static File file = new File("/Users/bondwong/Desktop/JEDB");
 	private static File file = new File("C:/Users/Ting/Desktop");
 	private Environment env;
 	private EntityStore store;
