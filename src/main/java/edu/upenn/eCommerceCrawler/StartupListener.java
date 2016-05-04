@@ -1,4 +1,5 @@
 package edu.upenn.eCommerceCrawler;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,6 +57,10 @@ public class StartupListener implements ServletContextListener {
 		BlockingQueue<Task> tasks = new LinkedBlockingQueue<Task>();
 		ExecutorService pool = Executors.newCachedThreadPool();
 		pool.execute(new ECommerceCrawler(tasks,"Ebay"));
+		pool.execute(new ECommerceCrawler(tasks,"Ebay"));
+		pool.execute(new ECommerceCrawler(tasks,"Ebay"));
+		pool.execute(new ECommerceCrawler(tasks, "Amazon"));
+		pool.execute(new ECommerceCrawler(tasks, "Amazon"));
 		pool.execute(new ECommerceCrawler(tasks, "Amazon"));
 		servletContextEvent.getServletContext().setAttribute(POOL, pool);
 
