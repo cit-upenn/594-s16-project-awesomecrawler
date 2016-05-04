@@ -4,11 +4,6 @@ We designed and built a REST API from scratch that allow users to access the eCo
 
                             http://45.79.133.245/v1/data/1/2000 
 
-To run sourcecodes, follow the steps: 
-1) update JRE System Library 1.5 to 1.8
-2) change absolute Path to database in BerekeleyDB.java class 
-3) run crawlerTest.java
-
 ###Why another webcrawler
 
 Despite existing powerful crawler such as wget, we believe there's a need for webcrawler that allowed easy customization. Moreover, the traditional webcrawler lacks some important features since it's not really multithreaded (although the actual crawling is spawned off in a separate thread). 
