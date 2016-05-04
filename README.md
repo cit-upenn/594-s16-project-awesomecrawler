@@ -16,7 +16,7 @@ Despite existing powerful crawler such as wget, we believe there's a need for we
 
 ###Algorithm 
 
-The two main tasks of a webcrawler are saving data from a URL and extracting hyperlinks. When the crawler visits a web page, it downloads the html page and extracts URLs it needs to visit next and puts them into a queue. For example, the crawler enters www.amazon.com and needs to navigate itself through to reach the level of an individual item. These URLs are then visited later when they were dequeued. When the crawler hits the product information levle, it will download sales information for each product.  
+The two main tasks of a webcrawler are saving data from a URL and extracting hyperlinks. When the crawler visits a web page, it downloads the html page and extracts URLs it needs to visit next and puts them into a queue. For example, the crawler enters www.amazon.com and needs to navigate itself through to reach the level of an individual item. These URLs are then visited later when they were dequeued. When the crawler hits the product information level, it will download sales information for each product.  
 
 ###Design patterns 
 
